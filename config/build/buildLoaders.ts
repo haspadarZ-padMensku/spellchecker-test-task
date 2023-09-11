@@ -10,7 +10,7 @@ export function buildLoaders ({ isDev }: BuildOptions): RuleSetRule[] {
   };
 
   const styleLoader = {
-    test: /\.s[ac]ss$/i,
+    test: /\.(sa|sc|c)ss$/i,
     use: [
       isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
       {
@@ -19,12 +19,12 @@ export function buildLoaders ({ isDev }: BuildOptions): RuleSetRule[] {
           modules: {
             auto: (resPath: string) => resPath.includes('.module.'),
             localIdentName: isDev
-              ? '[path][name]__[local][hash:base64:5]'
+              ? '[path][name]__[local]_[hash:base64:5]'
               : '[hash:base64:8]'
           }
         }
       },
-      'sass-loader'
+      'sass-loader',
     ]
   };
 

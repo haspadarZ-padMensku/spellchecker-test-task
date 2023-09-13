@@ -3,7 +3,7 @@ import './styles/index.scss';
 
 const App = () => {
   return (
-    <div className="app light">
+    <div className="app">
       <Main />
     </div>
   );

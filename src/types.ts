@@ -5,3 +5,8 @@ export enum Languages {
 }
 
 export const languageList = Object.values(Languages);
+
+export interface Suggestion {
+  original: string;
+  suggestions: string[];
+}

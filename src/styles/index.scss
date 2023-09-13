@@ -1,11 +1,12 @@
 @import "./variables/global";
-@import "./themes/light";
 @import "./reset";
 
 .app {
-  font: var(--font-m);
-  background: var(--bg-color);
-  color: var(--primary-color);
+  font: var(--font);
   max-width: 1440px;
   margin: 0 auto;
+}
+
+.menuItem {
+  padding-left: 8px;
 }

@@ -6,7 +6,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -34,6 +35,10 @@
             "error",
             "always"
         ],
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "no-trailing-spaces": "error",
+        "no-multiple-empty-lines": "error",
+        "newline-before-return": "error",
+        "newline-per-chained-call": "error"
     }
 }

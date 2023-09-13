@@ -50,7 +50,7 @@ const Editor: FC<EditorProps> = ({ lang, title }) => {
 
     const words = getWordsFromText(debouncedQuery);
     // check if word already in dictionary or ignored
-    const resultWords = words?.filter(w => !(DICTIONARY.includes(w) || IGNORED.includes(w)));
+    const resultWords = words?.filter(w => !(DICTIONARY.includes(w.toLowerCase()) || IGNORED.includes(w.toLowerCase())));
 
     if (!resultWords?.length) {
       setSuggestions([]);
@@ -120,14 +120,14 @@ const Editor: FC<EditorProps> = ({ lang, title }) => {
 
   const handleAddToDictionary = useCallback(() => {
     const word = selected.textContent;
-    DICTIONARY.push(word);
+    DICTIONARY.push(word.toLowerCase());
     localStorage.setItem('dictionary', JSON.stringify(DICTIONARY));
     handleSuggestionClick(word);
   }, [handleSuggestionClick, selected?.textContent]);
 
   const handleAddToIgnored = useCallback(() => {
     const word = selected.textContent;
-    IGNORED.push(word);
+    IGNORED.push(word.toLowerCase());
     localStorage.setItem('ignored', JSON.stringify(IGNORED));
     handleSuggestionClick(word);
   }, [handleSuggestionClick, selected?.textContent]);

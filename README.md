@@ -15,9 +15,6 @@ Run `npm install` from the root of the project.
 
 ## Demo
 
-Watch video placed int `./docs/Demo.m4v`
+Watch the Demo video here `./docs/Demo.m4v`
 
-<video controls>
-  <source src="https://github.com/haspadarZ-padMensku/spellchecker-test-task/raw/main/docs/Demo.m4v" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the Demo video](https://img.youtube.com/vi/jCfSZAmRILk/hqdefault.jpg)](https://youtu.be/jCfSZAmRILk)

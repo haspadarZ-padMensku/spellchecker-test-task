@@ -15,5 +15,9 @@ Run `npm install` from the root of the project.
 
 ## Demo
 
-<!-- [![asdf](./docs/Demo.m4v)](./docs/Demo.m4v) -->
-<video src="./docs/Demo.m4v"></video>
+Watch video placed int `./docs/Demo.m4v`
+
+<video controls>
+  <source src="https://github.com/haspadarZ-padMensku/spellchecker-test-task/raw/main/docs/Demo.m4v" type="video/mp4">
+  Your browser does not support the video tag.
+</video>

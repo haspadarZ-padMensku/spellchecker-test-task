@@ -4,12 +4,13 @@ import useDebounce from '../../hooks/useDebounce';
 import classNames from './styles.module.scss';
 import 'quill/dist/quill.snow.css';
 import { getSuggestions } from '../../api';
-import { Languages, Suggestion } from '../../types';
+import { Languages, LocalStorageKeys, Suggestion } from '../../types';
 import Popup from '../Popup';
 import { getCleanString,
   getLocalStorageByKey,
   getPositionOfWord,
-  getWordsFromText
+  getWordsFromText,
+  updateLocalStorage
 } from '../../helpers';
 
 const DEFAULT_DICT: Record<Languages, string[]> = {
@@ -18,8 +19,8 @@ const DEFAULT_DICT: Record<Languages, string[]> = {
   [Languages.EN_GB]: [],
 };
 
-const dictionary: Record<Languages, string[]> = getLocalStorageByKey('dictionary') || DEFAULT_DICT;
-const ignored: Record<Languages, string[]> = getLocalStorageByKey('ignored') || DEFAULT_DICT;
+const dictionary: Record<Languages, string[]> = getLocalStorageByKey(LocalStorageKeys.DICTIONARY) || DEFAULT_DICT;
+const ignored: Record<Languages, string[]> = getLocalStorageByKey(LocalStorageKeys.IGNORED) || DEFAULT_DICT;
 
 interface EditorProps {
   lang: Languages;
@@ -130,32 +131,14 @@ const Editor: FC<EditorProps> = ({ lang, title }) => {
   const handleAddToDictionary = useCallback(() => {
     const word = selected?.textContent;
     dictionary[lang].push(word.toLowerCase());
-    const lastDict = getLocalStorageByKey('dictionary');
-
-    let res = dictionary;
-
-    if (lastDict) {
-      lastDict[lang] = ignored[lang];
-      res = lastDict;
-    }
-
-    localStorage.setItem('dictionary', JSON.stringify(res));
+    updateLocalStorage(LocalStorageKeys.DICTIONARY, lang, dictionary);
     handleSuggestionClick(word);
   }, [handleSuggestionClick, lang, selected?.textContent]);
 
   const handleAddToIgnored = useCallback(() => {
     const word = selected?.textContent;
     ignored[lang].push(word.toLowerCase());
-    const lastIgnored = getLocalStorageByKey('ignored');
-
-    let res = ignored;
-
-    if (lastIgnored) {
-      lastIgnored[lang] = ignored[lang];
-      res = lastIgnored;
-    }
-
-    localStorage.setItem('ignored', JSON.stringify(res));
+    updateLocalStorage(LocalStorageKeys.IGNORED, lang, ignored);
     handleSuggestionClick(word);
   }, [handleSuggestionClick, lang, selected?.textContent]);
 

@@ -10,3 +10,8 @@ export interface Suggestion {
   original: string;
   suggestions: string[];
 }
+
+export enum LocalStorageKeys {
+  DICTIONARY = 'dictionary',
+  IGNORED = 'ignored',
+}

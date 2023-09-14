@@ -12,3 +12,8 @@ Run `npm install` from the root of the project.
 - `npm build:prod`
 
 - open `/build/index.html` in browser
+
+## Demo
+
+<!-- [![asdf](./docs/Demo.m4v)](./docs/Demo.m4v) -->
+<video src="./docs/Demo.m4v"></video>

@@ -43,3 +43,6 @@ export const getWordsFromText = (text: string) => {
   return wordsArray || [];
 };
 
+export const getLocalStorageByKey = (key: string) => {
+  return JSON.parse(localStorage.getItem(key));
+};

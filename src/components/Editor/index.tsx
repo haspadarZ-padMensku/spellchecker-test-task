@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Quill from 'quill';
 import useDebounce from '../../hooks/useDebounce';
 import classNames from './styles.module.scss';
@@ -6,11 +6,20 @@ import 'quill/dist/quill.snow.css';
 import { getSuggestions } from '../../api';
 import { Languages, Suggestion } from '../../types';
 import Popup from '../Popup';
-import { getCleanString, getPositionOfWord } from '../../helpers';
-import { getWordsFromText } from '../../helpers';
+import { getCleanString,
+  getLocalStorageByKey,
+  getPositionOfWord,
+  getWordsFromText
+} from '../../helpers';
 
-const DICTIONARY: string[] = JSON.parse(localStorage.getItem('dictionary')) || ['hello', 'my', 'world', 'hellen-gb10'];
-const IGNORED: string[] = JSON.parse(localStorage.getItem('ignored')) || [];
+const DEFAULT_DICT: Record<Languages, string[]> = {
+  [Languages.FR]: [],
+  [Languages.IT]: [],
+  [Languages.EN_GB]: [],
+};
+
+const dictionary: Record<Languages, string[]> = getLocalStorageByKey('dictionary') || DEFAULT_DICT;
+const ignored: Record<Languages, string[]> = getLocalStorageByKey('ignored') || DEFAULT_DICT;
 
 interface EditorProps {
   lang: Languages;
@@ -50,7 +59,7 @@ const Editor: FC<EditorProps> = ({ lang, title }) => {
 
     const words = getWordsFromText(debouncedQuery);
     // check if word already in dictionary or ignored
-    const resultWords = words?.filter(w => !(DICTIONARY.includes(w.toLowerCase()) || IGNORED.includes(w.toLowerCase())));
+    const resultWords = words?.filter(w => !(dictionary[lang].includes(w.toLowerCase()) || ignored[lang].includes(w.toLowerCase())));
 
     if (!resultWords?.length) {
       setSuggestions([]);
@@ -119,18 +128,36 @@ const Editor: FC<EditorProps> = ({ lang, title }) => {
   }, [selected]);
 
   const handleAddToDictionary = useCallback(() => {
-    const word = selected.textContent;
-    DICTIONARY.push(word.toLowerCase());
-    localStorage.setItem('dictionary', JSON.stringify(DICTIONARY));
+    const word = selected?.textContent;
+    dictionary[lang].push(word.toLowerCase());
+    const lastDict = getLocalStorageByKey('dictionary');
+
+    let res = dictionary;
+
+    if (lastDict) {
+      lastDict[lang] = ignored[lang];
+      res = lastDict;
+    }
+
+    localStorage.setItem('dictionary', JSON.stringify(res));
     handleSuggestionClick(word);
-  }, [handleSuggestionClick, selected?.textContent]);
+  }, [handleSuggestionClick, lang, selected?.textContent]);
 
   const handleAddToIgnored = useCallback(() => {
-    const word = selected.textContent;
-    IGNORED.push(word.toLowerCase());
-    localStorage.setItem('ignored', JSON.stringify(IGNORED));
+    const word = selected?.textContent;
+    ignored[lang].push(word.toLowerCase());
+    const lastIgnored = getLocalStorageByKey('ignored');
+
+    let res = ignored;
+
+    if (lastIgnored) {
+      lastIgnored[lang] = ignored[lang];
+      res = lastIgnored;
+    }
+
+    localStorage.setItem('ignored', JSON.stringify(res));
     handleSuggestionClick(word);
-  }, [handleSuggestionClick, selected?.textContent]);
+  }, [handleSuggestionClick, lang, selected?.textContent]);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
     // prevent wrap several words in one span

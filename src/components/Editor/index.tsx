@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import Quill from 'quill';
 import useDebounce from '../../hooks/useDebounce';
 import classNames from './styles.module.scss';
